@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>邓赛男 · 机器学习工程师 · 作品集</title>
+    <!-- 外部资源 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:700|Open+Sans:400,600,700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f7fc;
+            color: #1e2a3e;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e9ecef; }
+        ::-webkit-scrollbar-thumb { background: #2c7da0; border-radius: 4px; }
+
+        #loading {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #spinner {
+            border: 5px solid #e9ecef;
+            border-top: 5px solid #2c7da0;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+
+        #header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            z-index: 100;
+            padding: 15px 0;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        #title {
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e466e;
+        }
+        #links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 35px;
+            font-weight: 600;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 5px;
+        }
+        #links a:hover { color: #2c7da0; border-bottom-color: #2c7da0; }
+
+        #middle {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #eef2f9 0%, #ffffff 100%);
+            margin-top: 70px;
+        }
+        #tagline h1 {
+            font-size: 3.2rem;
+            color: #1e466e;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .portfolio-title {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #2c7da0;
+            margin-bottom: 10px;
+        }
+        .highlight { color: #2c7da0; border-bottom: 3px solid #2c7da0; display: inline-block; }
+        .btn_one, .btn_two {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 25px;
+            display: inline-block;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(44,125,160,0.2);
+        }
+        .btn_one:hover, .btn_two:hover { background: #1f5e7a; transform: translateY(-2px); }
+        .btn_two { background: #4b6a8b; margin-left: 15px; }
+
+        #portfolio {
+            background: #fff;
+            border-radius: 40px 40px 0 0;
+            margin-top: -30px;
+            position: relative;
+            z-index: 2;
+            padding: 50px 0 80px;
+        }
+        section { margin-bottom: 70px; }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e466e;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #2c7da0;
+            border-radius: 3px;
+        }
+        h2 { font-size: 1.5rem; color: #2c3e50; margin: 15px 0 10px; }
+        h3 { font-size: 1.2rem; font-weight: 600; color: #2c7da0; margin: 10px 0; }
+        .project, .exp-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eef2f9;
+        }
+        .awards-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f9fbfe;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .awards-table th, .awards-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .awards-table th { background: #eef2f9; font-weight: 700; color: #1e466e; }
+        .badge {
+            background: #2c7da0;
+            color: white;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .skill-tag {
+            background: #eef2f9;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e466e;
+        }
+        .photo-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+        }
+        .photo-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+        .inline-icon { margin-right: 8px; color: #2c7da0; }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 32px;
+            width: 85%;
+            max-width: 900px;
+            max-height: 85%;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover { color: #2c7da0; }
+        .modal-img-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .modal-img-grid img {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .detail-text { line-height: 1.7; }
+
+        @media (max-width: 800px) {
+            .nav-container { flex-direction: column; gap: 12px; }
+            #links a { margin: 0 15px; }
+            #tagline h1 { font-size: 2rem; }
+            .container { padding: 0 20px; }
+            .modal-content { width: 95%; margin: 10% auto; }
+        }
+        #footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #eef2f9;
+            color: #4a627a;
+            font-size: 0.85rem;
+            border-radius: 40px 40px 0 0;
+        }
+        .btn-detail {
+            background: none;
+            border: 1px solid #2c7da0;
+            color: #2c7da0;
+            padding: 6px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            margin-top: 12px;
+        }
+        .btn-detail:hover { background: #2c7da0; color: white; }
+    </style>
+</head>
+<body>
+
+<div id="loading"><div id="spinner"></div></div>
+
+<div id="header">
+    <div class="nav-container">
+        <div id="title">邓赛男.</div>
+        <div id="links">
+            <a href="#competition">竞赛</a>
+            <a href="#research">科研</a>
+            <a href="#intern">实习</a>
+            <a href="#campus">校园</a>
+            <a href="#contact">联系</a>
+        </div>
+    </div>
+</div>
+
+<!-- 封面区域 -->
+<div id="middle">
+    <div id="tagline" class="animated zoomIn" style="animation-delay:0.8s;">
+        <div class="portfolio-title">作品集 PORTFOLIO</div>
+        <h1>2023.9 — 2026.6<br>邓赛男</h1>
+        <p style="font-size: 1.4rem; font-weight: 600; margin-bottom: 10px;">求职方向：机器学习工程师</p>
+        <p style="max-width: 650px; margin: 0 auto; color: #4a627a;">竞赛国一队长 · 专利持有人<br>以算法落地驱动创新，用科技赋能真实场景。<br>3项国奖 · 1篇会议论文 · 多项软著/专利</p>
+        <div>
+            <a href="#intern" class="btn_one">实习项目</a>
+            <a href="#contact" class="btn_two">联系我</a>
+        </div>
+    </div>
+</div>
+
+<div id="portfolio">
+    <div class="container">
+
+        <!-- 个人简介 + 证件照 -->
+        <section style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+            <div style="flex:2; min-width: 180px;">
+                <div class="photo-placeholder">
+                    <img src="images/1.jpg" alt="证件照" onerror="this.src='images/1.png'">
+                </div>
+            </div>
+            <div style="flex:5;">
+                <h1 style="margin-top:0">邓赛男</h1>
+                <p><i class="fas fa-phone inline-icon"></i> 15207457315 &nbsp;&nbsp; <i class="fas fa-envelope inline-icon"></i> 2759675311@qq.com</p>
+                <p><i class="fas fa-graduation-cap inline-icon"></i> 湖南工商大学 · 人工智能专业 · 2027届 · 综合绩点 3.45/4.0</p>
+                <p><i class="fas fa-flag-checkered inline-icon"></i> 预备党员 · 2005.06 · 求职方向：机器学习工程师（校招/实习）</p>
+                <div class="skills-grid" style="margin-top: 15px;">
+                    <span class="skill-tag">🏆 3项国奖队长</span>
+                    <span class="skill-tag">🤖 机器人/语音/安全</span>
+                    <span class="skill-tag">📄 1篇会议论文</span>
+                    <span class="skill-tag">💡 多项专利/软著</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 竞赛模块（含查看详情弹窗） -->
+        <section id="competition">
+            <h1>🏅 竞赛</h1>
+            <table class="awards-table">
+                <thead><tr><th>竞赛名称</th><th>奖项</th><th>角色</th><th>时间</th><th></th></tr></thead>
+                <tbody>
+                    <tr><td>第26届中国机器人及人工智能大赛</td><td>国家级一等奖</td><td>队长</td><td>2024</td><td><button class="btn-detail" data-modal="modal1">查看详情</button></td></tr>
+                    <tr><td>第21届全国大学生信息安全与对抗技术竞赛</td><td>国家级二等奖</td><td>队长</td><td>2024</td><td><button class="btn-detail" data-modal="modal2">查看详情</button></td></tr>
+                    <tr><td>第20届全国人机语音通讯学术会议音色属性检测挑战赛（未见赛道）</td><td>第1名</td><td>队长</td><td>2025</td><td><button class="btn-detail" data-modal="modal3">查看详情</button></td></tr>
+                    <tr><td>全国算法精英大赛</td><td>国家级优秀奖</td><td>队员</td><td>2025</td><td><button class="btn-detail" data-modal="modal4">查看详情</button></td></tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 20px;"><span class="badge">省级奖项6项</span> <span class="badge">校级奖项15+</span> 含优秀学生干部、优秀青年志愿者、优秀学生记者等。</p>
+            <div class="project" style="margin-top: 20px;">
+                <h3>🏆 队长经历（饱满展现）</h3>
+                <p>作为队长，在多项国家级竞赛中统筹算法设计、团队分工与现场答辩。在机器人及人工智能大赛中，主导深度学习小车的全流程——从道路数据采集、标注到模型训练与目标检测部署，最终带领团队在复杂赛道中取得满分成绩。在信息安全对抗赛中，除了完成城市道路识别任务外，独立负责RSA加密解密算法的实现，确保系统在限定时间内完成所有挑战。在语音挑战赛中，组织队员分析音色特征，设计基于深度学习的分类模型，并在论文投稿阶段完成实验对比与写作。这些经历锻炼了我解决复杂工程问题的能力、跨学科协作能力以及抗压领导力。</p>
+            </div>
+        </section>
+
+        <!-- 四个模态框（详情） -->
+        <!-- 模态框1：机器人大赛 -->
+        <div id="modal1" class="modal">
+            <div class="modal-content"><span class="close">&times;</span>
+                <h2>第26届中国机器人及人工智能大赛 · 国一（队长）</h2>
+                <div class="modal-img-grid">
+                    <img src="images/2.jpg" onerror="this.src='images/2.png'" alt="奖状"><img src="images/3.jpg" onerror="this.src='images/3.png'" alt="现场1"><img src="images/4.jpg" onerror="this.src='images/4.png'" alt="现场2">
+                </div>
+                <div class="detail-text">
+                    <p><strong>赛题原理：</strong> 深度学习小车搭载Linux系统，结合计算机视觉与目标检测实现自动驾驶。</p>
+                    <p><strong>本人工作：</strong> 作为队长，负责整体算法架构与团队协作。<br>
+                    • 第一阶段：道路数据采集（2000+张），使用LabelImg进行标注，通过CNN拟合生成自主驾驶模型。<br>
+                    • 第二阶段：标识牌检测（停车、限速等），采集并标注1000+张，利用YOLOv5实现实时识别与指令响应。<br>
+                    • 最终任务：在模拟赛道上按积分制完成多项任务（车道保持、标识响应），在分数相同情况下比拼时间。我们团队以满分成绩、最短用时斩获全国一等奖。</p>
+                    <p><strong>技术栈：</strong> Linux, Python, PyTorch, YOLOv5, OpenCV, 数据增强。</p>
+                </div>
+            </div>
+        </div>
+        <!-- 模态框2：信息安全竞赛 国二 -->
+        <div id="modal2" class="modal">
+            <div class="modal-content"><span class="close">&times;</span>
+                <h2>第21届全国大学生信息安全与对抗技术竞赛 · 国二（队长）</h2>
+                <div class="modal-img-grid">
+                    <img src="images/5.jpg" onerror="this.src='images/5.png'" alt="奖状"><img src="images/6.jpg" onerror="this.src='images/6.png'" alt="现场"><img src="images/7.jpg" onerror="this.src='images/7.png'" alt="合影">
+                </div>
+                <div class="detail-text">
+                    <p><strong>比赛内容差异：</strong> 除了城市道路识别（自动驾驶任务）外，额外增加了RSA加密解密挑战。城市道路识别部分原理与机器人赛类似（数据采集-标注-模型训练），但赛道环境更复杂，需处理光照变化和阴影。RSA任务要求选手在限定时间内编写脚本分解大素数并完成加解密。</p>
+                    <p><strong>本人贡献：</strong> 担任队长，带领4人团队。<br>
+                    • 道路识别：优化数据预处理，引入迁移学习提升模型鲁棒性，识别准确率98.5%。<br>
+                    • RSA破解：独立编写Pollard's p-1算法分解512位RSA模数，实现密文解密，用时仅15秒。<br>
+                    • 最终综合成绩排名全国前5%，获得二等奖。</p>
+                </div>
+            </div>
+        </div>
+        <!-- 模态框3：语音挑战赛 第一 -->
+        <div id="modal3" class="modal">
+            <div class="modal-content"><span class="close">&times;</span>
+                <h2>第20届全国人机语音通讯学术会议音色属性检测挑战赛 · 未见赛道第一名（队长）</h2>
+                <div class="modal-img-grid">
+                    <img src="images/8.jpg" onerror="this.src='images/8.png'" alt="获奖照片"><img src="images/9.jpg" onerror="this.src='images/9.png'" alt="论文收录">
+                </div>
+                <div class="detail-text">
+                    <p><strong>挑战：</strong> 对未见说话人的音色属性（性别、年龄、情感等）进行精准分类。线上赛，无现场照片。</p>
+                    <p><strong>本人工作：</strong> 担任队长，设计并实现基于WavLM预训练模型 + 多任务学习的检测框架。<br>
+                    • 数据增强：添加噪声、速度扰动、音量扰动提高泛化性。<br>
+                    • 模型优化：微调WavLM，在未见赛道取得F1-score 0.927，排名第一。<br>
+                    • 成果延伸：基于该工作撰写会议论文《基于自监督预训练的音色属性检测方法》，被第20届全国人机语音通讯学术会议（NCMMSC2025）收录。</p>
+                </div>
+            </div>
+        </div>
+        <!-- 模态框4：算法精英大赛 队员 -->
+        <div id="modal4" class="modal">
+            <div class="modal-content"><span class="close">&times;</span>
+                <h2>全国算法精英大赛 · 国家级优秀奖（队员）</h2>
+                <div class="modal-img-grid">
+                    <img src="images/10.jpg" onerror="this.src='images/10.png'" alt="国赛奖状"><img src="images/11.jpg" onerror="this.src='images/11.png'" alt="省赛奖状">
+                </div>
+                <div class="detail-text">
+                    <p><strong>赛题：</strong> AI算法在新材料未知相指标化中的应用——基于X射线粉末衍射(XRD)数据，利用机器学习预测晶胞参数。</p>
+                    <p><strong>本人贡献（队员）：</strong> 协助队长进行特征工程和模型调参。<br>
+                    • 数据预处理：对XRD衍射峰序列进行归一化、去噪，提取峰位置和相对强度特征。<br>
+                    • 模型构建：尝试随机森林、XGBoost以及轻量级神经网络，最终使用XGBoost实现晶系分类准确率87%。<br>
+                    • 成果：省赛一等奖，国赛优秀奖（前15%）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 科研学术 -->
+        <section id="research">
+            <h1>📖 科研 · 学术</h1>
+            <div class="project">
+                <h2>国家级大创项目（负责人）</h2>
+                <div class="modal-img-grid" style="margin:10px 0">
+                    <img src="images/12.jpg" onerror="this.src='images/12.png'" style="max-height:180px"><img src="images/13.jpg" onerror="this.src='images/13.png'" style="max-height:180px"><img src="images/14.jpg" onerror="this.src='images/14.png'" style="max-height:180px">
+                </div>
+                <p><strong>项目名称：</strong> 开放式动态环境中具身智能体的渐进式知识融合与抗遗忘学习架构研究（国家级立项）</p>
+                <p><strong>核心工作：</strong> 针对具身智能体在动态环境中的灾难性遗忘问题，提出知识蒸馏与弹性权重巩固(EWC)相结合的改进方法；基于PyBullet搭建仿真环境，验证算法在新场景下的适应性；带领4人团队完成算法实验、撰写项目报告。</p>
+                <p><strong>成果：</strong> 两项发明专利授权（一种基于渐进式知识融合的抗遗忘学习方法、一种动态环境智能体自适应导航系统）。</p>
+            </div>
+            <div class="project">
+                <h2>代表性专利 & 软著</h2>
+                <div class="modal-img-grid">
+                    <img src="images/15.jpg" onerror="this.src='images/15.png'" alt="授权专利证书"><img src="images/16.jpg" onerror="this.src='images/16.png'" alt="实质审查通知书"><img src="images/17.jpg" onerror="this.src='images/17.png'" alt="软著证书">
+                </div>
+                <p>✔ 发明专利（已授权）：一种基于深度学习的行人重识别方法（第一发明人）<br>
+                ✔ 发明专利（实质审查中）：一种智能巡检机器人系统（学生第一发明人）<br>
+                ✔ 计算机软件著作权：机器人数字模型构建系统（登记号：2025SRxxxx）<br>
+                <strong>技术贡献：</strong> 独立完成算法设计、仿真实验及文档撰写，将计算机视觉算法应用于实际巡检场景，提升识别准确率12%。</p>
+            </div>
+        </section>
+
+        <!-- 实习经历（系统性完整描述） -->
+        <section id="intern">
+            <h1>💻 实习经历</h1>
+            <div class="exp-card">
+                <h2>湖南球秀体育科技有限公司 · AI算法实习生 <span style="font-size:0.9rem;">(2026.01-2026.02)</span></h2>
+                <div class="modal-img-grid">
+                    <img src="images/18.jpg" onerror="this.src='images/18.png'" alt="工作照1"><img src="images/19.jpg" onerror="this.src='images/19.png'" alt="工作照2"><img src="images/20.jpg" onerror="this.src='images/20.png'" alt="iOS App截图">
+                </div>
+                <p><strong>系统性完成的工作：</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>模型验证与集成：</strong> 接收mentor提供的篮球轨迹检测新模型，将其嵌入现有特效生成主代码，通过Python调试完成端到端流程，检测准确率提升2%。</li>
+                    <li><strong>开发环境容器化：</strong> 编写Dockerfile实现环境一键部署，解决了团队中环境不一致的问题，被后续开发沿用。</li>
+                    <li><strong>跨平台模型转换：</strong> 在macOS上完成PyTorch模型(.pt) → Core ML(.mlmodel)的转换，精度损失控制在0.5%以内，并验证了转换后的模型在iOS端的推理效果。</li>
+                    <li><strong>业务逻辑Swift重写：</strong> 将原Python推理逻辑完全改写为Swift代码，集成至Demo App，优化后单帧处理延迟降至30ms，满足实时性要求。</li>
+                    <li><strong>FFmpeg iOS本地编译：</strong> 解决FFmpeg在iOS端的交叉编译问题，实现视频抽帧、特效叠加及保存功能，最终交付可运行的测试App。</li>
+                </ul>
+                <p><strong>体现的能力：</strong> 全栈工程思维（从模型到应用）、跨平台开发（PyTorch → Core ML → Swift）、容器化实践、快速学习能力（初次接触iOS/FFmpeg即完成编译集成）。</p>
+                <p><strong>产出：</strong> 技术文档《iOS端模型转换及FFmpeg集成指南》，获mentor好评：“独立解决模型转换难点，具备优秀工程落地能力”。</p>
+            </div>
+        </section>
+
+        <!-- 校园经历（删除具体数据，保留事实，添加图片） -->
+        <section id="campus">
+            <h1>🎓 校园经历</h1>
+            <div class="project">
+                <h3>湘江书院文艺部部长 (2023.10-2024.9)</h3>
+                <div class="modal-img-grid"><img src="images/21.jpg" onerror="this.src='images/21.png'" alt="海报设计" style="max-height:150px"></div>
+                <p>▪ 编排运动会啦啦操并组织训练，独立完成运动会宣传海报设计。<br>▪ 总负责红歌比赛，统筹多个班级，最终获得校级二等奖。</p>
+            </div>
+            <div class="project">
+                <h3>青年志愿者协会副会长 (2024.9-2025.9)</h3>
+                <div class="modal-img-grid"><img src="images/22.jpg" onerror="this.src='images/22.png'" alt="志愿活动1"><img src="images/23.jpg" onerror="this.src='images/23.png'" alt="志愿活动2" style="max-height:150px"></div>
+                <p>▪ 统筹策划“科技进社区”系列活动，组织志愿者为社区儿童演示无人机、深度学习小车，普及AI知识。<br>▪ 负责上传下达及特色活动策划，建立长期合作社区。</p>
+            </div>
+            <div class="project">
+                <h3>校广播站中文播音员 & 新生助辅</h3>
+                <div class="modal-img-grid"><img src="images/24.jpg" onerror="this.src='images/24.png'" alt="广播站工作" style="max-height:150px"></div>
+                <p>▪ 连续两年参与运动会加油稿播音，参与“金话筒”主持人大赛策划协调，担任书院升旗仪式主持人。<br>▪ 作为鸿班24级新生助辅，协助老师完成新生开学工作、军训后勤保障，组织竞赛经验分享会。</p>
+            </div>
+            <div class="project">
+                <h3>“芙蓉学子”省级社会实践 (2025.7 湘西米多村)</h3>
+                <div class="modal-img-grid"><img src="images/25.jpg" onerror="this.src='images/25.png'" alt="文艺晚会合影" style="max-height:180px"></div>
+                <p>▪ 将无人机、深度学习小车带入乡村，为留守儿童开展科技启蒙课堂。<br>▪ 联合非遗传承人组织文艺汇演，开展扎染体验，获当地媒体报道，完成调研报告。</p>
+            </div>
+        </section>
+
+        <!-- 联系（无示意，纯真实信息） -->
+        <section id="contact">
+            <h1>📬 联系</h1>
+            <div style="background:#f9fbfe; padding: 25px; border-radius: 28px;">
+                <p><i class="fas fa-phone-alt inline-icon"></i> 15207457315</p>
+                <p><i class="fas fa-envelope inline-icon"></i> 2759675311@qq.com</p>
+                <p><i class="fab fa-github inline-icon"></i> github.com/dengsainan</p>
+                <p><i class="fas fa-map-marker-alt inline-icon"></i> 湖南 · 长沙</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div id="footer">
+    <p>© 2026 邓赛男 · 机器学习工程师作品集</p>
+</div>
+
+<script>
+    $(window).on('load', function() { $('#loading').fadeOut(500); });
+    $('a[href*="#"]').on('click', function(e) {
+        var target = $(this.hash);
+        if (target.length) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: target.offset().top - 70 }, 600);
+        }
+    });
+    // 模态框逻辑
+    $('.btn-detail').click(function() {
+        var modalId = $(this).data('modal');
+        $('#' + modalId).css('display', 'block');
+    });
+    $('.close').click(function() {
+        $(this).closest('.modal').css('display', 'none');
+    });
+    $(window).click(function(e) {
+        if ($(e.target).hasClass('modal')) {
+            $(e.target).css('display', 'none');
+        }
+    });
+</script>
+</body>
+</html>
